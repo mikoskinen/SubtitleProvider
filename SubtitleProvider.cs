@@ -80,7 +80,6 @@ namespace SubtitleProvider
                 var subtitleExtractor = new SubtitleExtractor(this.CurrentVideo);
                 subtitleExtractor.ExtractSubtitleFile(filePath);
 
-                lastFetched = DateTime.Now;
             }
 
             catch (Exception ex)
@@ -98,7 +97,7 @@ namespace SubtitleProvider
             try
             {
 
-                if ((DateTime.Now - lastFetched).Days < 3)
+                if ((DateTime.Now - lastFetched).Minutes < 3)
                     return false;
 
                 Logger.ReportInfo("Checking if subtitle exists for video: " + this.CurrentVideo.GetVideoFileName());

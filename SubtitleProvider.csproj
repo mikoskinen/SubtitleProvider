@@ -60,14 +60,10 @@
     <Compile Include="Code\Utility\ZipStorer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OSS\mediabrowser\MediaBrowser\MediaBrowser.csproj">
+    <ProjectReference Include="..\MediaBrowser\MediaBrowser.csproj">
       <Project>{C6B27E5F-3D83-4D71-85B9-AF83C8392721}</Project>
       <Name>MediaBrowser</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Code\Utility\LICENSE.TXT" />
-    <Content Include="LICENSE.TXT" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
