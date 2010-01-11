@@ -1,0 +1,7 @@
+C:\dev\projects\SubtitleProvider\bin\Debug\SubtitleProvider.dll
+C:\dev\projects\SubtitleProvider\bin\Debug\SubtitleProvider.pdb
+C:\dev\projects\SubtitleProvider\bin\Debug\Microsoft.MediaCenter.dll
+C:\dev\projects\SubtitleProvider\bin\Debug\System.Data.SQLite.dll
+C:\dev\projects\SubtitleProvider\obj\Debug\ResolveAssemblyReference.cache
+C:\dev\projects\SubtitleProvider\obj\Debug\SubtitleProvider.dll
+C:\dev\projects\SubtitleProvider\obj\Debug\SubtitleProvider.pdb
