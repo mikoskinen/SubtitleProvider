@@ -1,0 +1,17 @@
+<Plugins>
+   
+  <Plugin>
+
+      <Version>0.1.0.0</Version>
+
+      <Name>Subtitle Provider</Name>
+
+      <Description>SubtitleProvider for MediaBrowser is a plugin that automatically downloads the missing subtitle files for your movies and tv shows.</Description>
+
+      <Filename>SubtitleProvider.dll</Filename>
+
+      <InstallGlobally>false</InstallGlobally>
+
+   </Plugin>
+
+</Plugins>
