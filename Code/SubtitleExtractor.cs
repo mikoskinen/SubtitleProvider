@@ -4,13 +4,12 @@ using System.IO.Compression;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Logging;
 using SubtitleProvider.ExtensionMethods;
-using SubtitleProvider;
 
 namespace SubtitleProvider
 {
-    public class SubtitleExtractor
+    public class SubtitleExtractor : ISubtitleExtractor
     {
-        private readonly Video video;
+        protected readonly Video video;
 
         public SubtitleExtractor(Video video)
         {
@@ -30,10 +29,15 @@ namespace SubtitleProvider
                 foreach (var fileEntry in dir)
                 {
                     var fileExtension = Path.GetExtension(fileEntry.FilenameInZip);
-                    var videoFileNameWithoutExtension = Path.GetFileNameWithoutExtension(video.GetVideoFileName());
 
-                    var destinationFilePath = Path.Combine(video.GetMediaFolder(), videoFileNameWithoutExtension + fileExtension);
-                    zip.ExtractStoredFile(fileEntry, destinationFilePath);
+                    var isSubtitleFile = SubtitleProvider.SubtitleExtensions.IndexOf(fileExtension) >= 0;
+                    
+                    if (isSubtitleFile)
+                    {
+                        var destinationFilePath = GetDestinationFilePath(fileExtension);
+
+                        zip.ExtractStoredFile(fileEntry, destinationFilePath);
+                    }
                 }
 
                 zip.Close();
@@ -47,6 +51,14 @@ namespace SubtitleProvider
 
                 throw;
             }
+        }
+
+        protected virtual string GetDestinationFilePath(string fileExtension)
+        {
+            var videoFileNameWithoutExtension = Path.GetFileNameWithoutExtension(video.GetVideoFileName());
+
+            return Path.Combine(video.GetMediaFolder(),
+                                videoFileNameWithoutExtension + fileExtension);
         }
     }
 }

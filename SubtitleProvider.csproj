@@ -40,22 +40,85 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\MultiFileSubtitleFinder.cs" />
     <Compile Include="Code\SubtitleDownloader.cs" />
     <Compile Include="Code\SubtitleExtractor.cs" />
+    <Compile Include="Code\SubtitleSources\OpenSubtitlesSubtitleSource.cs" />
     <Compile Include="Code\SubtitleSources\SubtitleSource.cs" />
     <Compile Include="Code\SubtitleSources\SubtitleSourceBase.cs" />
     <Compile Include="Code\Utility\ExtensionMethods.cs" />
+    <Compile Include="Code\ILocalSubtitleFinder.cs" />
+    <Compile Include="Code\SingleFileSubtitleFinder.cs" />
+    <Compile Include="Code\LocalSubtitleFinderFactory.cs" />
+    <Compile Include="Code\ISubtitleExtractor.cs" />
+    <Compile Include="Code\MultiFileSubtitleExtractor.cs" />
+    <Compile Include="Code\Utility\XML-RPC\GuidEx.cs" />
+    <Compile Include="Code\Utility\XML-RPC\IHttpRequest.cs" />
+    <Compile Include="Code\Utility\XML-RPC\IHttpRequestHandler.cs" />
+    <Compile Include="Code\Utility\XML-RPC\IHttpResponse.cs" />
+    <Compile Include="Code\Utility\XML-RPC\IXmlRpcProxy.cs" />
+    <Compile Include="Code\Utility\XML-RPC\RequestResponseLogger.cs" />
+    <Compile Include="Code\Utility\XML-RPC\SystemMethodsBase.cs" />
+    <Compile Include="Code\Utility\XML-RPC\Tracer.cs" />
+    <Compile Include="Code\Utility\XML-RPC\util.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcAsyncResult.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcBeginAttribute.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcBoolean.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcClientFormatterSink.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcClientFormatterSinkProvider.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcClientProtocol.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcDateTime.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcDocWriter.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcDouble.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcEndAttribute.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcException.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcFaultException.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcHttpRequest.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcHttpResponse.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcHttpServerProtocol.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcInt.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcListenerRequest.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcListenerResponse.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcListenerService.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcLogger.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcMemberAttribute.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcMethodAttribute.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcMethodInfo.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcMissingMappingAttribute.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcNonStandard.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcParameterAttribute.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcParameterInfo.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcProxyCodeGen.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcProxyGen.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcRequest.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcRequestEventArgs.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcResponse.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcResponseEventArgs.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcReturnValueAttribute.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcSerializer.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcServerFormatterSink.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcServerFormatterSinkProvider.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcServerProtocol.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcService.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcServiceAttribute.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcServiceInfo.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcStruct.cs" />
+    <Compile Include="Code\Utility\XML-RPC\XmlRpcUrlAttribute.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Subtitle.cs" />
-    <Compile Include="Code\SubtitleFinder.cs" />
+    <Compile Include="Code\RemoteSubtitleFinder.cs" />
+    <Compile Include="Code\SubtitleExtractorFactory.cs" />
     <Compile Include="SubtitleProvider.cs" />
     <Compile Include="Code\Utility\ZipStorer.cs" />
   </ItemGroup>
@@ -67,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Code\Utility\LICENSE.TXT" />
+    <Content Include="Code\Utility\XML-RPC\LICENSE.TXT" />
     <Content Include="LICENSE.TXT" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

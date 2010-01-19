@@ -51,6 +51,8 @@ namespace SubtitleProvider
 
         #region Implemented Methods
 
+        public static Object synchronizeVariable = "locking variable";
+
         /// <summary>
         /// Finds and downloads the correct subtitle
         /// </summary>
@@ -59,28 +61,36 @@ namespace SubtitleProvider
 
             try
             {
-                if (this.DoesSubtitleExist())
-                    return;
-
-                var finder = new SubtitleFinder(this.CurrentVideo);
-
-                var subtitle = finder.FindSubtitle(languages);
-
-                if (subtitle == null)
+                lock (synchronizeVariable)
                 {
-                    Logger.ReportInfo("Downloading subtitle failed. No subtitle found: " + this.CurrentVideo.GetVideoFileName());
-                    return;
+
+                    if (this.DoesSubtitleExist())
+                        return;
+
+                    var finder = new RemoteSubtitleFinder(this.CurrentVideo);
+
+                    var subtitle = finder.FindSubtitle(languages);
+
+                    if (subtitle == null)
+                    {
+                        Logger.ReportInfo("Downloading subtitle failed. No subtitle found: " + this.CurrentVideo.GetVideoFileName());
+                        return;
+                    }
+
+                    var filePath = Path.Combine(ApplicationPaths.AppCachePath, Path.GetRandomFileName() + ".zip");
+
+                    var subtitleDownloader = new SubtitleDownloader();
+                    subtitleDownloader.GetSubtitleToPath(subtitle, filePath);
+
+                    var subtitleExtractorFactory = new SubtitleExtractorFactory();
+                    var subtitleExtractor = subtitleExtractorFactory.CreateSubtitleExtractorByVideo(CurrentVideo);
+
+                    subtitleExtractor.ExtractSubtitleFile(filePath);
+
+                    this.lastFetched = DateTime.Now;
+
                 }
 
-                var filePath = Path.Combine(ApplicationPaths.AppCachePath, subtitle.VideoName + ".zip");
-
-                var subtitleDownloader = new SubtitleDownloader();
-                subtitleDownloader.GetSubtitleToPath(subtitle, filePath);
-
-                var subtitleExtractor = new SubtitleExtractor(this.CurrentVideo);
-                subtitleExtractor.ExtractSubtitleFile(filePath);
-
-                this.lastFetched = DateTime.Now;
             }
 
             catch (Exception ex)
@@ -137,24 +147,11 @@ namespace SubtitleProvider
         private bool DoesSubtitleExist()
         {
 
-            var dirInfo = new DirectoryInfo(CurrentVideo.GetMediaFolder());
-            
-            var subtitleFiles = dirInfo.GetFiles(dirInfo, SubtitleExtensions, ',');
+            var localSubtitleFinderFactory = new LocalSubtitleFinderFactory();
+            var localSubtitleFinder = localSubtitleFinderFactory.CreateLocalSubtitleFinderByVideo(CurrentVideo);
 
-            if (subtitleFiles.Length == 0)
-                return false;
+            return localSubtitleFinder.DoesSubtitleExist();
 
-            var videoFileName = Path.GetFileNameWithoutExtension(this.CurrentVideo.GetVideoFileName()).ToLower();
-
-            foreach (var file in subtitleFiles)
-            {
-                var subtitleFileName = Path.GetFileNameWithoutExtension(file.Name).ToLower();
-
-                if (videoFileName == subtitleFileName)
-                    return true;
-            }
-
-            return false;
         }
 
 
