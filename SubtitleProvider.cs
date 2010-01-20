@@ -66,7 +66,10 @@ namespace SubtitleProvider
                     return;
 
                 if (this.DoesSubtitleExist())
+                {
+                    ClearFetching(CurrentVideo);
                     return;
+                }
 
                 var finder = new RemoteSubtitleFinder(this.CurrentVideo);
 
@@ -75,6 +78,7 @@ namespace SubtitleProvider
                 if (subtitle == null)
                 {
                     Logger.ReportInfo("Downloading subtitle failed. No subtitle found: " + this.CurrentVideo.GetVideoFileName());
+                    ClearFetching(CurrentVideo);
                     return;
                 }
 
