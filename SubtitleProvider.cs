@@ -4,10 +4,8 @@ using System.IO;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Logging;
-using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Providers;
 using MediaBrowser.Library.Providers.Attributes;
-using MediaBrowser.LibraryManagement;
 using SubtitleProvider.ExtensionMethods;
 
 namespace SubtitleProvider
@@ -30,9 +28,6 @@ namespace SubtitleProvider
 
         private Video CurrentVideo { get { return (Video)Item; } }
 
-        [Persist]
-        DateTime lastFetched = DateTime.MinValue;
-
         private List<string> languageCollection;
 
         private List<string> languages
@@ -49,9 +44,14 @@ namespace SubtitleProvider
 
         #endregion
 
-        #region Implemented Methods
+        #region Concurrency objects
 
         public static Object synchronizeVariable = "locking variable";
+        private static Dictionary<string, Video> fetchingCollection;
+    
+        #endregion
+
+        #region Implemented Methods
 
         /// <summary>
         /// Finds and downloads the correct subtitle
@@ -61,35 +61,34 @@ namespace SubtitleProvider
 
             try
             {
-                lock (synchronizeVariable)
+
+                if (this.StartFetching(CurrentVideo) == false)
+                    return;
+
+                if (this.DoesSubtitleExist())
+                    return;
+
+                var finder = new RemoteSubtitleFinder(this.CurrentVideo);
+
+                var subtitle = finder.FindSubtitle(languages);
+
+                if (subtitle == null)
                 {
-
-                    if (this.DoesSubtitleExist())
-                        return;
-
-                    var finder = new RemoteSubtitleFinder(this.CurrentVideo);
-
-                    var subtitle = finder.FindSubtitle(languages);
-
-                    if (subtitle == null)
-                    {
-                        Logger.ReportInfo("Downloading subtitle failed. No subtitle found: " + this.CurrentVideo.GetVideoFileName());
-                        return;
-                    }
-
-                    var filePath = Path.Combine(ApplicationPaths.AppCachePath, Path.GetRandomFileName() + ".zip");
-
-                    var subtitleDownloader = new SubtitleDownloader();
-                    subtitleDownloader.GetSubtitleToPath(subtitle, filePath);
-
-                    var subtitleExtractorFactory = new SubtitleExtractorFactory();
-                    var subtitleExtractor = subtitleExtractorFactory.CreateSubtitleExtractorByVideo(CurrentVideo);
-
-                    subtitleExtractor.ExtractSubtitleFile(filePath);
-
-                    this.lastFetched = DateTime.Now;
-
+                    Logger.ReportInfo("Downloading subtitle failed. No subtitle found: " + this.CurrentVideo.GetVideoFileName());
+                    return;
                 }
+
+                var filePath = Path.Combine(ApplicationPaths.AppCachePath, Path.GetRandomFileName() + ".zip");
+
+                var subtitleDownloader = new SubtitleDownloader();
+                subtitleDownloader.GetSubtitleToPath(subtitle, filePath);
+
+                var subtitleExtractorFactory = new SubtitleExtractorFactory();
+                var subtitleExtractor = subtitleExtractorFactory.CreateSubtitleExtractorByVideo(CurrentVideo);
+
+                subtitleExtractor.ExtractSubtitleFile(filePath);
+
+                ClearFetching(CurrentVideo);
 
             }
 
@@ -99,17 +98,22 @@ namespace SubtitleProvider
                     string.Format("Error when getting subtitle for video: {0}.", this.CurrentVideo.GetVideoFileName());
 
                 Logger.ReportException(reportedError, ex);
+
+                ClearFetching(CurrentVideo);
+
             }
+
         }
 
+        /// <summary>
+        /// Returns true if subtitle is missing for the current video.
+        /// </summary>
+        /// <returns></returns>
         public override bool NeedsRefresh()
         {
 
             try
             {
-
-                if ((DateTime.Now - lastFetched).Days < 3)
-                    return false;
 
                 Logger.ReportInfo("Checking if subtitle exists for video: " + this.CurrentVideo.GetVideoFileName());
 
@@ -154,7 +158,10 @@ namespace SubtitleProvider
 
         }
 
-
+        /// <summary>
+        /// Gets the configured languages in a list-format
+        /// </summary>
+        /// <returns></returns>
         private List<string> GetLanguages()
         {
             var languageString = Plugin.PluginOptions.Instance.Languages;
@@ -177,6 +184,72 @@ namespace SubtitleProvider
             return languageCollection;
         }
 
+
+        #endregion
+
+        #region Concurrency Methods
+
+        /// <summary>
+        /// Gets if fetching should proceed. Tries to lock the current video so that only one thread at the time
+        /// tries to find the subtitle for one video.
+        /// </summary>
+        /// <param name="video"></param>
+        /// <returns></returns>
+        private bool StartFetching(Video video)
+        {
+            lock (synchronizeVariable)
+            {
+
+                if (fetchingCollection == null)
+                    fetchingCollection = new Dictionary<string, Video>();
+
+                var isFetching = IsAlreadyFetching(CurrentVideo);
+
+                if (isFetching)
+                    return false;
+
+                var key = video.Name;
+
+                fetchingCollection.Add(key, video);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes the video from the locked-list.
+        /// </summary>
+        /// <param name="video"></param>
+        private void ClearFetching(Video video)
+        {
+            lock (synchronizeVariable)
+            {
+                var key = video.Name;
+
+                if (fetchingCollection != null && fetchingCollection.ContainsKey(key))
+                    fetchingCollection.Remove(key);
+            }
+        }
+
+        /// <summary>
+        /// Gets if there's already a thread which is trying to find a subtitle
+        /// for current video.
+        /// </summary>
+        /// <param name="video"></param>
+        /// <returns></returns>
+        private bool IsAlreadyFetching(Video video)
+        {
+
+            if (fetchingCollection == null)
+                return false;
+
+            var key = video.Name;
+
+            if (fetchingCollection.ContainsKey(key))
+                return true;
+
+            return false;
+        }
 
         #endregion
 

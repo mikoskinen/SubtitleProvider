@@ -6,23 +6,24 @@ namespace SubtitleProvider
     public class Plugin : BasePlugin
     {
 
+        #region Public Properties
+
+        /// <summary>
+        /// Contains the configuration for this plugin
+        /// </summary>
         public static PluginConfiguration<PluginOptions> PluginOptions { get; set; }
 
-        public override void Init(Kernel kernel)
-        {
-
-            kernel.MetadataProviderFactories.Add(MetadataProviderFactory.Get<SubtitleProvider>());
-
-            PluginOptions = new PluginConfiguration<PluginOptions>(kernel, this.GetType().Assembly);
-            PluginOptions.Load();
-
-        }
-
+        /// <summary>
+        /// Gets name of the plugin
+        /// </summary>
         public override string Name
         {
             get { return "Subtitle Provider"; }
         }
 
+        /// <summary>
+        /// Gets description of the plugin
+        /// </summary>
         public override string Description
         {
             get { return "This plugin finds and downloads subtitles automatically. In configuration, separate the languages with comma. For example: Finnish,English,Swedish"; }
@@ -36,6 +37,9 @@ namespace SubtitleProvider
             }
         }
 
+        /// <summary>
+        /// Gets plugin's configuration
+        /// </summary>
         public override IPluginConfiguration PluginConfiguration
         {
             get
@@ -43,5 +47,26 @@ namespace SubtitleProvider
                 return PluginOptions;
             }
         }
+
+        #endregion
+
+        #region Initialization
+
+        /// <summary>
+        /// Initializes the plugin
+        /// </summary>
+        /// <param name="kernel"></param>
+        public override void Init(Kernel kernel)
+        {
+
+            kernel.MetadataProviderFactories.Add(MetadataProviderFactory.Get<SubtitleProvider>());
+
+            PluginOptions = new PluginConfiguration<PluginOptions>(kernel, this.GetType().Assembly);
+            PluginOptions.Load();
+
+        }
+
+        #endregion
+
     }
 }
