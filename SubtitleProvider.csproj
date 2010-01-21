@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.MediaCenter, Version=6.0.6000.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\OSS\mediabrowser\VistaDlls\Microsoft.MediaCenter.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.MediaCenter.UI, Version=6.0.6000.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\VistaDlls\Microsoft.MediaCenter.UI.dll</HintPath>
@@ -47,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SubtitleMenuManager.cs" />
     <Compile Include="Code\MultiFileSubtitleFinder.cs" />
     <Compile Include="Code\SubtitleDownloader.cs" />
     <Compile Include="Code\SubtitleExtractor.cs" />

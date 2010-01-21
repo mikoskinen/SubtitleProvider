@@ -52,21 +52,36 @@ namespace SubtitleProvider.ExtensionMethods
             possibleReleaseNames.Add(fileName);
 
             // File name with and without dots
-            possibleReleaseNames.Add(fileName.Replace(".", " "));
-            possibleReleaseNames.Add(fileName.Replace(" ", "."));
+            var fileNameWithoutDots = fileName.Replace(".", " ");
+            if (!possibleReleaseNames.Contains(fileNameWithoutDots))
+                possibleReleaseNames.Add(fileNameWithoutDots);
+
+            var fileNameWithDots = fileName.Replace(" ", ".");
+            if (!possibleReleaseNames.Contains(fileNameWithDots))
+                possibleReleaseNames.Add(fileNameWithDots);
 
             // Directory name
             var directoryName = video.MediaLocation.Name;
-            possibleReleaseNames.Add(directoryName);
+            if (!possibleReleaseNames.Contains(directoryName))
+                possibleReleaseNames.Add(directoryName);
 
             // Directory with and without dots
-            possibleReleaseNames.Add(directoryName.Replace(".", " "));
-            possibleReleaseNames.Add(directoryName.Replace(" ", "."));
+            var dirNameWithoutDots = directoryName.Replace(".", " ");
+            if (!possibleReleaseNames.Contains(dirNameWithoutDots))
+                possibleReleaseNames.Add(dirNameWithoutDots);
+
+            var dirNameWithDots = directoryName.Replace(" ", ".");
+            if (!possibleReleaseNames.Contains(dirNameWithDots))
+                possibleReleaseNames.Add(dirNameWithDots);
 
             // CD-number removed from the filename
             var fileNameInLowerCase = fileName.ToLower();
-            var fileNameWithoutCDNumber = fileNameInLowerCase.Substring(0, fileNameInLowerCase.IndexOf("cd1") - 1);
-            possibleReleaseNames.Add(fileNameWithoutCDNumber);
+            if (fileNameInLowerCase.IndexOf("cd1") > 0)
+            {
+                var fileNameWithoutCdNumber = fileNameInLowerCase.Substring(0, fileNameInLowerCase.IndexOf("cd1") - 1);
+                if (!possibleReleaseNames.Contains(fileNameWithoutCdNumber))
+                    possibleReleaseNames.Add(fileNameWithoutCdNumber);
+            }
 
             return possibleReleaseNames;
         }

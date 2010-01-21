@@ -51,7 +51,7 @@ namespace CookComputing.XmlRpc
     private bool _keepAlive = true;
     private XmlRpcNonStandard _nonStandard = XmlRpcNonStandard.None;
     private bool _preAuthenticate = false;
-    private Version _protocolVersion = HttpVersion.Version11;
+    private System.Version _protocolVersion = HttpVersion.Version11;
     private IWebProxy _proxy = null;
 #if (!COMPACT_FRAMEWORK)
     private CookieCollection _responseCookies;

@@ -1,5 +1,9 @@
-﻿using MediaBrowser.Library;
+﻿using System;
+using System.Collections.Generic;
+using MediaBrowser.Library;
+using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Plugins;
+using Microsoft.MediaCenter;
 
 namespace SubtitleProvider
 {
@@ -63,6 +67,22 @@ namespace SubtitleProvider
 
             PluginOptions = new PluginConfiguration<PluginOptions>(kernel, this.GetType().Assembly);
             PluginOptions.Load();
+
+
+            var isMC = AppDomain.CurrentDomain.FriendlyName.Contains("ehExtHost");
+            if (isMC) //only do this inside of MediaCenter as menus can only be created inside MediaCenter
+            {
+
+                this.CreateContextMenu(kernel);
+            }
+        }
+
+        private void CreateContextMenu(Kernel kernel)
+        {
+
+            var subtitleMenuItem = new MenuItem("Subtitle?", "resx://MediaBrowser/MediaBrowser.Resources/IconFloral", SubtitleMenuManager.DoesSubTitleExist, new List<Type>() { typeof(Movie), typeof(Episode) });
+
+            kernel.AddMenuItem(subtitleMenuItem);
 
         }
 

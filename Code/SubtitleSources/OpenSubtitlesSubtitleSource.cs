@@ -48,7 +48,10 @@ namespace SubtitleProvider
             if (subtitles == null || subtitles.Count < 1)
                 return null;
 
-            var data = (object[])subtitles["data"];
+            var data = subtitles["data"] as object[];
+
+            if (data == null)
+                return null;
 
             foreach (var preferredLanguage in languages)
             {
