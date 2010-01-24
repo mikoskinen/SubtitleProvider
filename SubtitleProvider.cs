@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using MediaBrowser;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Logging;
+using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Providers;
 using MediaBrowser.Library.Providers.Attributes;
 using SubtitleProvider.ExtensionMethods;
@@ -82,6 +84,7 @@ namespace SubtitleProvider
                     return;
                 }
 
+
                 var filePath = Path.Combine(ApplicationPaths.AppCachePath, Path.GetRandomFileName() + ".zip");
 
                 var subtitleDownloader = new SubtitleDownloader();
@@ -93,6 +96,9 @@ namespace SubtitleProvider
                 subtitleExtractor.ExtractSubtitleFile(filePath);
 
                 ClearFetching(CurrentVideo);
+
+                var message = "Subtitle downloaded for " + CurrentVideo.Name;
+                Application.CurrentInstance.Information.AddInformationString(message);
 
             }
 
@@ -109,12 +115,15 @@ namespace SubtitleProvider
 
         }
 
+
+
         /// <summary>
         /// Returns true if subtitle is missing for the current video.
         /// </summary>
         /// <returns></returns>
         public override bool NeedsRefresh()
         {
+
 
             try
             {
@@ -156,7 +165,7 @@ namespace SubtitleProvider
         {
 
             var localSubtitleFinderFactory = new LocalSubtitleFinderFactory();
-            var localSubtitleFinder = localSubtitleFinderFactory.CreateLocalSubtitleFinderByVideo(CurrentVideo);
+            var localSubtitleFinder = localSubtitleFinderFactory.CreateLocalSubtitleFinderByVideo(CurrentVideo, Logger.LoggerInstance);
 
             return localSubtitleFinder.DoesSubtitleExist();
 

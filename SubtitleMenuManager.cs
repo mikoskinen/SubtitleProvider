@@ -1,6 +1,7 @@
 ﻿using MediaBrowser;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Entities;
+using MediaBrowser.Library.Logging;
 using Microsoft.MediaCenter;
 using SubtitleProvider;
 
@@ -10,13 +11,14 @@ public class SubtitleMenuManager
     {
         if (!(item.BaseItem is Video)) return;
 
-        var video = (Video) item.BaseItem;
+        var video = (Video)item.BaseItem;
         var localSubTitleFinderFactory = new LocalSubtitleFinderFactory();
 
-        var finder = localSubTitleFinderFactory.CreateLocalSubtitleFinderByVideo(video);
+        var finder = localSubTitleFinderFactory.CreateLocalSubtitleFinderByVideo(video, Logger.LoggerInstance);
 
         var message = finder.DoesSubtitleExist() ? "Subtitle exists" : "No subtitle available";
 
         Application.DisplayDialog("", message, DialogButtons.Ok, 2);
     }
+
 }

@@ -35,7 +35,7 @@ namespace SubtitleProvider.ExtensionMethods
             foreach (var videoFile in video.VideoFiles)
             {
                 var fileName = Path.GetFileNameWithoutExtension(videoFile);
-                if (fileName.ToLower() != "sample")
+                if (fileName.ToLower() != "sample" && fileName.ToLower() != "trailer")
                     videoFileCount++;
             }
 
@@ -101,7 +101,9 @@ namespace SubtitleProvider.ExtensionMethods
             var fileNames = new List<string>();
             foreach (var videoFile in video.VideoFiles)
             {
-                fileNames.Add(videoFile);
+                var fileName = Path.GetFileNameWithoutExtension(videoFile);
+                if (fileName.ToLower() != "sample" && fileName.ToLower() != "trailer")
+                    fileNames.Add(videoFile);
             }
 
             return fileNames;

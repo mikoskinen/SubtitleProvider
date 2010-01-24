@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Plugins;
-using Microsoft.MediaCenter;
+using SubtitleProvider.Views;
 
 namespace SubtitleProvider
 {
@@ -88,5 +88,12 @@ namespace SubtitleProvider
 
         #endregion
 
+        public override void Configure()
+        {
+            var configView = new ConfigureView();
+
+            configView.ShowDialog();
+
+        }
     }
 }

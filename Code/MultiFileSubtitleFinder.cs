@@ -1,5 +1,6 @@
 using System.IO;
 using MediaBrowser.Library.Entities;
+using MediaBrowser.Library.Logging;
 using SubtitleProvider.ExtensionMethods;
 
 namespace SubtitleProvider
@@ -7,10 +8,12 @@ namespace SubtitleProvider
     public class MultiFileSubtitleFinder : ILocalSubtitleFinder
     {
         private readonly Video video;
+        private readonly ILogger logger;
 
-        public MultiFileSubtitleFinder(Video video)
+        public MultiFileSubtitleFinder(Video video, ILogger logger)
         {
             this.video = video;
+            this.logger = logger;
         }
 
         public bool DoesSubtitleExist()

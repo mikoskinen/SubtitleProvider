@@ -1,6 +1,8 @@
-﻿namespace SubtitleProvider
+﻿using System;
+
+namespace SubtitleProvider
 {
-    public class Subtitle
+    [Serializable()]public class Subtitle
     {
         private readonly string videoName;
         private readonly string langugage;

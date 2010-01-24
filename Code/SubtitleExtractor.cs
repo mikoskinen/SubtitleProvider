@@ -26,28 +26,33 @@ namespace SubtitleProvider
                 var zip = ZipStorer.Open(filePath, FileAccess.Read);
                 var dir = zip.ReadCentralDir();
 
+                var extractedFileCount = 0;
                 foreach (var fileEntry in dir)
                 {
                     var fileExtension = Path.GetExtension(fileEntry.FilenameInZip);
 
                     var isSubtitleFile = SubtitleProvider.SubtitleExtensions.IndexOf(fileExtension) >= 0;
-                    
+
                     if (isSubtitleFile)
                     {
                         var destinationFilePath = GetDestinationFilePath(fileExtension);
 
                         zip.ExtractStoredFile(fileEntry, destinationFilePath);
+
+                        extractedFileCount++;
                     }
                 }
 
                 zip.Close();
-
                 File.Delete(filePath);
 
+                if (extractedFileCount < 1)
+                    throw new Exception("Subtitle package did not contain any subtitle files");
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Logger.ReportError("Extracting subtitle file failed: " + filePath);
+                Logger.ReportException("Extracting subtitle file failed: " + filePath, ex);
 
                 throw;
             }

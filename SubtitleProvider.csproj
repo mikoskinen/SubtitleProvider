@@ -37,20 +37,23 @@
     </Reference>
     <Reference Include="Microsoft.MediaCenter.UI, Version=6.0.6000.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\VistaDlls\Microsoft.MediaCenter.UI.dll</HintPath>
+      <HintPath>..\..\OSS\mediabrowser\VistaDlls\Microsoft.MediaCenter.UI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Utility\ZipStorer.cs" />
     <Compile Include="SubtitleMenuManager.cs" />
     <Compile Include="Code\MultiFileSubtitleFinder.cs" />
     <Compile Include="Code\SubtitleDownloader.cs" />
@@ -125,7 +128,12 @@
     <Compile Include="Code\RemoteSubtitleFinder.cs" />
     <Compile Include="Code\SubtitleExtractorFactory.cs" />
     <Compile Include="SubtitleProvider.cs" />
-    <Compile Include="Code\Utility\ZipStorer.cs" />
+    <Compile Include="Views\ConfigureView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ConfigureView.Designer.cs">
+      <DependentUpon>ConfigureView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OSS\mediabrowser\MediaBrowser\MediaBrowser.csproj">
@@ -137,6 +145,11 @@
     <Content Include="Code\Utility\LICENSE.TXT" />
     <Content Include="Code\Utility\XML-RPC\LICENSE.TXT" />
     <Content Include="LICENSE.TXT" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ConfigureView.resx">
+      <DependentUpon>ConfigureView.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
