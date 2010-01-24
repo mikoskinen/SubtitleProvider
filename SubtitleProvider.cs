@@ -97,8 +97,8 @@ namespace SubtitleProvider
 
                 ClearFetching(CurrentVideo);
 
-                var message = "Subtitle downloaded for " + CurrentVideo.Name;
-                Application.CurrentInstance.Information.AddInformationString(message);
+                //var message = "Subtitle downloaded for " + CurrentVideo.Name;
+                //Application.CurrentInstance.Information.AddInformationString(message);
 
             }
 

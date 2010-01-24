@@ -88,12 +88,12 @@ namespace SubtitleProvider
 
         #endregion
 
-        public override void Configure()
-        {
-            var configView = new ConfigureView();
+        //public override void Configure()
+        //{
+        //    var configView = new ConfigureView();
 
-            configView.ShowDialog();
+        //    configView.ShowDialog();
 
-        }
+        //}
     }
 }
