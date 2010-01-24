@@ -71,19 +71,7 @@ namespace SubtitleProvider
 
             var isMC = AppDomain.CurrentDomain.FriendlyName.Contains("ehExtHost");
             if (isMC) //only do this inside of MediaCenter as menus can only be created inside MediaCenter
-            {
-
-                this.CreateContextMenu(kernel);
-            }
-        }
-
-        private void CreateContextMenu(Kernel kernel)
-        {
-
-            var subtitleMenuItem = new MenuItem("Subtitle?", "resx://MediaBrowser/MediaBrowser.Resources/IconFloral", SubtitleMenuManager.DoesSubTitleExist, new List<Type>() { typeof(Movie), typeof(Episode) });
-
-            kernel.AddMenuItem(subtitleMenuItem);
-
+                SubtitleMenuManager.CreateMenu(kernel);
         }
 
         #endregion

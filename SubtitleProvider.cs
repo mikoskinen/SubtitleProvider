@@ -30,20 +30,6 @@ namespace SubtitleProvider
 
         private Video CurrentVideo { get { return (Video)Item; } }
 
-        private List<string> languageCollection;
-
-        private List<string> languages
-        {
-            get
-            {
-                if (languageCollection != null)
-                    return languageCollection;
-
-                return GetLanguages();
-            }
-        }
-
-
         #endregion
 
         #region Concurrency objects
@@ -63,6 +49,8 @@ namespace SubtitleProvider
 
             try
             {
+                if (Plugin.PluginOptions.Instance.DisableAutomaticDownloading)
+                    return;
 
                 if (this.StartFetching(CurrentVideo) == false)
                     return;
@@ -73,32 +61,12 @@ namespace SubtitleProvider
                     return;
                 }
 
-                var finder = new RemoteSubtitleFinder(this.CurrentVideo);
+                var processor = new SubtitleProviderProcessor(Logger.LoggerInstance,
+                                                              SubtitleProviderProcessor.ProvideRequestSourceEnum.Automatic);
 
-                var subtitle = finder.FindSubtitle(languages);
-
-                if (subtitle == null)
-                {
-                    Logger.ReportInfo("Downloading subtitle failed. No subtitle found: " + this.CurrentVideo.GetVideoFileName());
-                    ClearFetching(CurrentVideo);
-                    return;
-                }
-
-
-                var filePath = Path.Combine(ApplicationPaths.AppCachePath, Path.GetRandomFileName() + ".zip");
-
-                var subtitleDownloader = new SubtitleDownloader();
-                subtitleDownloader.GetSubtitleToPath(subtitle, filePath);
-
-                var subtitleExtractorFactory = new SubtitleExtractorFactory();
-                var subtitleExtractor = subtitleExtractorFactory.CreateSubtitleExtractorByVideo(CurrentVideo);
-
-                subtitleExtractor.ExtractSubtitleFile(filePath);
+                processor.ProvideSubtitleForVideo(CurrentVideo);
 
                 ClearFetching(CurrentVideo);
-
-                //var message = "Subtitle downloaded for " + CurrentVideo.Name;
-                //Application.CurrentInstance.Information.AddInformationString(message);
 
             }
 
@@ -123,7 +91,6 @@ namespace SubtitleProvider
         /// <returns></returns>
         public override bool NeedsRefresh()
         {
-
 
             try
             {
@@ -177,24 +144,12 @@ namespace SubtitleProvider
         /// <returns></returns>
         private List<string> GetLanguages()
         {
+
+            var languageProvider = new LanguageProvider();
+
             var languageString = Plugin.PluginOptions.Instance.Languages;
+            return languageProvider.CreateLanguageCollectionFromString(languageString);
 
-            if (languageString == "")
-            {
-                languageCollection = new List<string>() { "English" };
-                return languageCollection;
-            }
-
-            var languageArray = languageString.Split(',');
-
-            languageCollection = new List<string>();
-
-            foreach (var lang in languageArray)
-            {
-                languageCollection.Add(lang);
-            }
-
-            return languageCollection;
         }
 
 

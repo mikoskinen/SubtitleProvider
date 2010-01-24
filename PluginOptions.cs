@@ -6,5 +6,8 @@ namespace SubtitleProvider
     public class PluginOptions : PluginConfigurationOptions 
     {
         [Label("Languages:")] public string Languages;
+
+        [Label("Disable automatic downloading:")] public bool DisableAutomaticDownloading;
+
     }
 }

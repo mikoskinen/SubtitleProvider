@@ -53,7 +53,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\LanguageProvider.cs" />
     <Compile Include="Code\Utility\ZipStorer.cs" />
+    <Compile Include="SubtitleProviderProcessor.cs" />
     <Compile Include="SubtitleMenuManager.cs" />
     <Compile Include="Code\MultiFileSubtitleFinder.cs" />
     <Compile Include="Code\SubtitleDownloader.cs" />
