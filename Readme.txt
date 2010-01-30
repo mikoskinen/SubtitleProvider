@@ -33,8 +33,7 @@ Known issues:
 
 Future releases and features:
 1. New ways to interact with the plugin
-2. Blacklisting of invalid subtitles
-3. Extended configuration settings
+2. Extended configuration settings
 
 Installation location: http://www.ohjelmistot.org/SubtitleProvider/plugin_info.xml
 
