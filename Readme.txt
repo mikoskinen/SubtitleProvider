@@ -3,14 +3,11 @@ SubtitleProvider for MediaBrowser
 About:
 SubtitleProvider for MediaBrowser is a plugin that automatically downloads the missing subtitle files for your movies and tv shows.
 
-Notice:
-The plugin is currently in BETA-stage. Please read the known issues. Use at your own risk (and submit bug reports if possible).
-
 Current version:
-BETA 2
+v1.0
 
 How to use:
-Use MediaBrowser's Configuration Wizard to add new plugin source and point it here: http://www.ohjelmistot.org/SubtitleProv ... n_info.xml 
+http://community.mediabrowser.tv/permalinks/1311/how-do-i-configure-and-use-the-subtitleprovider-plugin
 
 How it works:
 This plugin works against http://www.opensubtitles.org and http://www.subtitlesource.org. There's no plan to add other subtitle sources at this point. The plugin's workflow contains two phases:
@@ -27,21 +24,21 @@ MediaBrowser Configuration Tool can be used to set preferred languages. Currentl
 -Icelandic
 -Spanish
 -French
+-Dutch
 
 For example to make finnish the top priority language and english the fallback, use this string: Finnish,English
 
 Known issues:
--Doesn't work with multi-part video files Fixed in Beta 2
--Not optimized at all Somewhat fixed in Beta 2. More to come
--No plugin.xml available at the current time so the plugin must be manually downloaded Fixed, new installation link available in this post
--There's no gui-support whatsoever. Should there be? 
+-SubtitleSource.org has disabled their search API.
 
 Future releases and features:
-1. Multi-part video support Supported in Beta 2
-2. More subtitle sources OpenSubtitles.org added in Beta 2
-3. New ways to match the video files to subtitles (hashing?) Supported in Beta 2
+1. New ways to interact with the plugin
+2. Blacklisting of invalid subtitles
+3. Extended configuration settings
 
-Installation location: http://www.ohjelmistot.org/SubtitleProv ... n_info.xml
+Installation location: http://www.ohjelmistot.org/SubtitleProvider/plugin_info.xml
+
+Guide: http://community.mediabrowser.tv/permalinks/1311/how-do-i-configure-and-use-the-subtitleprovider-plugin
 
 Source code: http://github.com/mikoskinen/SubtitleProvider/
 

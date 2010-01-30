@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using MediaBrowser.Library;
-using MediaBrowser.Library.Entities;
+using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Plugins;
-using SubtitleProvider.Views;
 
 namespace SubtitleProvider
 {
     public class Plugin : BasePlugin
     {
-
         #region Public Properties
 
         /// <summary>
@@ -52,6 +50,7 @@ namespace SubtitleProvider
             }
         }
 
+
         #endregion
 
         #region Initialization
@@ -68,20 +67,11 @@ namespace SubtitleProvider
             PluginOptions = new PluginConfiguration<PluginOptions>(kernel, this.GetType().Assembly);
             PluginOptions.Load();
 
-
-            var isMC = AppDomain.CurrentDomain.FriendlyName.Contains("ehExtHost");
-            if (isMC) //only do this inside of MediaCenter as menus can only be created inside MediaCenter
+            var isMc = AppDomain.CurrentDomain.FriendlyName.Contains("ehExtHost");
+            if (isMc) //only do this inside of MediaCenter as menus can only be created inside MediaCenter
                 SubtitleMenuManager.CreateMenu(kernel);
         }
 
         #endregion
-
-        //public override void Configure()
-        //{
-        //    var configView = new ConfigureView();
-
-        //    configView.ShowDialog();
-
-        //}
     }
 }

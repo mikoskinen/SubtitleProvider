@@ -33,11 +33,11 @@
   <ItemGroup>
     <Reference Include="Microsoft.MediaCenter, Version=6.0.6000.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\OSS\mediabrowser\VistaDlls\Microsoft.MediaCenter.dll</HintPath>
+      <HintPath>lib\Microsoft.MediaCenter.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.MediaCenter.UI, Version=6.0.6000.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\OSS\mediabrowser\VistaDlls\Microsoft.MediaCenter.UI.dll</HintPath>
+      <HintPath>lib\Microsoft.MediaCenter.UI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -53,22 +53,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Blacklisting\BlackListingProvider.cs" />
+    <Compile Include="Code\Blacklisting\DataSourceFactory.cs" />
+    <Compile Include="Code\Blacklisting\IDataSource.cs" />
     <Compile Include="Code\LanguageProvider.cs" />
+    <Compile Include="Code\Blacklisting\XmlDataSource.cs" />
     <Compile Include="Code\Utility\ZipStorer.cs" />
     <Compile Include="SubtitleProviderProcessor.cs" />
     <Compile Include="SubtitleMenuManager.cs" />
-    <Compile Include="Code\MultiFileSubtitleFinder.cs" />
+    <Compile Include="Code\Finders\MultiFileSubtitleFinder.cs" />
     <Compile Include="Code\SubtitleDownloader.cs" />
-    <Compile Include="Code\SubtitleExtractor.cs" />
-    <Compile Include="Code\SubtitleSources\OpenSubtitlesSubtitleSource.cs" />
-    <Compile Include="Code\SubtitleSources\SubtitleSource.cs" />
-    <Compile Include="Code\SubtitleSources\SubtitleSourceBase.cs" />
+    <Compile Include="Code\Extractors\SubtitleExtractor.cs" />
+    <Compile Include="Code\Sources\OpenSubtitlesSubtitleSource.cs" />
+    <Compile Include="Code\Sources\SubtitleSource.cs" />
+    <Compile Include="Code\Sources\SubtitleSourceBase.cs" />
     <Compile Include="Code\Utility\ExtensionMethods.cs" />
-    <Compile Include="Code\ILocalSubtitleFinder.cs" />
-    <Compile Include="Code\SingleFileSubtitleFinder.cs" />
-    <Compile Include="Code\LocalSubtitleFinderFactory.cs" />
-    <Compile Include="Code\ISubtitleExtractor.cs" />
-    <Compile Include="Code\MultiFileSubtitleExtractor.cs" />
+    <Compile Include="Code\Finders\ILocalSubtitleFinder.cs" />
+    <Compile Include="Code\Finders\SingleFileSubtitleFinder.cs" />
+    <Compile Include="Code\Finders\LocalSubtitleFinderFactory.cs" />
+    <Compile Include="Code\Extractors\ISubtitleExtractor.cs" />
+    <Compile Include="Code\Extractors\MultiFileSubtitleExtractor.cs" />
     <Compile Include="Code\Utility\XML-RPC\GuidEx.cs" />
     <Compile Include="Code\Utility\XML-RPC\IHttpRequest.cs" />
     <Compile Include="Code\Utility\XML-RPC\IHttpRequestHandler.cs" />
@@ -126,16 +130,10 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Code\Subtitle.cs" />
+    <Compile Include="Code\Entities\Subtitle.cs" />
     <Compile Include="Code\RemoteSubtitleFinder.cs" />
-    <Compile Include="Code\SubtitleExtractorFactory.cs" />
+    <Compile Include="Code\Extractors\SubtitleExtractorFactory.cs" />
     <Compile Include="SubtitleProvider.cs" />
-    <Compile Include="Views\ConfigureView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\ConfigureView.Designer.cs">
-      <DependentUpon>ConfigureView.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OSS\mediabrowser\MediaBrowser\MediaBrowser.csproj">
@@ -149,9 +147,7 @@
     <Content Include="LICENSE.TXT" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\ConfigureView.resx">
-      <DependentUpon>ConfigureView.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="Tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

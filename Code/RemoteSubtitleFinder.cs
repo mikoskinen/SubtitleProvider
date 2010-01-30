@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MediaBrowser.Library.Entities;
+using SubtitleProvider.ExtensionMethods;
 
 namespace SubtitleProvider
 {
@@ -32,20 +33,56 @@ namespace SubtitleProvider
 
         #region Public Methods
 
-        public Subtitle FindSubtitle(List<string> languages)
+        public Subtitle FindSubtitle(List<string> preferredLanguages, BlackListingProvider blackListingProvider)
         {
 
+            var subtitleCollection = GetSubtitlesFromAllSources(preferredLanguages);
+
+            if (subtitleCollection.IsNullOrEmpty())
+                return null;
+
+            var bestSubtitle = SelectBestSubtitle(subtitleCollection, preferredLanguages, blackListingProvider);
+
+            return bestSubtitle;
+
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private List<Subtitle> GetSubtitlesFromAllSources(List<string> preferredLanguages)
+        {
+            var subtitleCollection = new List<Subtitle>();
             foreach (var source in sources)
             {
-                var subtitle = source.FindSubtitleForVideo(video, languages);
-                if (subtitle != null)
+                var foundSubtitleCollection = source.FindSubtitlesForVideo(video, preferredLanguages);
+
+                if (foundSubtitleCollection.IsNullOrEmpty())
+                    continue;
+
+                subtitleCollection.AddRange(foundSubtitleCollection);
+            }
+            return subtitleCollection;
+        }
+
+        private Subtitle SelectBestSubtitle(List<Subtitle> subtitleCollection, List<string> preferredLanguages, BlackListingProvider blackListingProvider)
+        {
+            if (subtitleCollection == null) return null;
+
+            foreach (var language in preferredLanguages)
+            {
+                foreach (var subtitle in subtitleCollection)
                 {
-                    return subtitle;
+                    if (blackListingProvider.IsBlacklisted(subtitle))
+                        continue;
+
+                    if (subtitle.Langugage == language)
+                        return subtitle;
                 }
             }
 
             return null;
-
         }
 
         #endregion

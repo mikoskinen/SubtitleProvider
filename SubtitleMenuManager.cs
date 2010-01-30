@@ -38,26 +38,45 @@ public class SubtitleMenuManager
         var subtitleExist = finder.DoesSubtitleExist();
         if (subtitleExist)
         {
-            HandleSubtitleAvailable();
+            HandleSubtitleAvailable(video);
             return;
         }
 
         HandleNoSubtitle(video);
     }
 
-    private static void HandleSubtitleAvailable()
+    #endregion
+
+    #region Handlers
+
+    private static void HandleSubtitleAvailable(Video video)
     {
-        //var blacklistDialogResult = Application.DisplayDialog("Blacklist?", "Subtitle available", DialogButtons.No | DialogButtons.Yes, 4);
-        Application.DisplayDialog("", "Subtitle available", DialogButtons.Ok, 2);
+        var blacklistDialogResult = Application.DisplayDialog("Blacklist and check online for new subtitles?", "Subtitle available", DialogButtons.No | DialogButtons.Yes, 0);
+
+        if (blacklistDialogResult != DialogResult.Yes)
+            return;
+
+        HandleBlackListing(video);
+    }
+
+    private static void HandleBlackListing(Video video)
+    {
+        var dataSource = DataSourceFactory.CreateDataSource();
+        var subtitle = dataSource.GetCurrentSubtitle(video);
+
+        var blackListingProvider = new BlackListingProvider(video);
+        blackListingProvider.BlackList(subtitle);
+
+        HandleDownloadSubtitle(video);
     }
 
     private static void HandleNoSubtitle(Video video)
     {
-        var downloadDialogResult = Application.DisplayDialog("Download?", "No subtitle available", DialogButtons.No | DialogButtons.Yes, 4);
+        var downloadDialogResult = Application.DisplayDialog("Check online for subtitles", "No subtitle available", DialogButtons.No | DialogButtons.Yes, 0);
 
-        if (downloadDialogResult != DialogResult.Yes) 
+        if (downloadDialogResult != DialogResult.Yes)
             return;
-        
+
         HandleDownloadSubtitle(video);
     }
 

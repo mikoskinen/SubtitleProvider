@@ -9,3 +9,5 @@ _ReSharper.*
 *.suo
 *.cache
 ~$*
+SubtitleProvider.Tests
+SubtitleProvider.Tests/*

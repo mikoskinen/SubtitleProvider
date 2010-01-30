@@ -8,7 +8,6 @@ using SubtitleProvider;
 
 public class SubtitleProviderProcessor
 {
-
     #region Private Members
 
     private readonly ILogger logger;
@@ -41,10 +40,13 @@ public class SubtitleProviderProcessor
             var message = string.Format("Finding subtitle for {0}", video.Name);
             InformUser(message);
 
-            var finder = new RemoteSubtitleFinder(video);
-            var languageProvider = new LanguageProvider();
+            var dataSource = DataSourceFactory.CreateDataSource();
+            var blackListingProvider = new BlackListingProvider(video, dataSource);
 
-            var subtitle = finder.FindSubtitle(languageProvider.CreateLanguageCollectionFromString(Plugin.PluginOptions.Instance.Languages));
+            var languageProvider = new LanguageProvider();
+            var languages = languageProvider.CreateLanguageCollectionFromString(Plugin.PluginOptions.Instance.Languages);
+            var finder = new RemoteSubtitleFinder(video);
+            var subtitle = finder.FindSubtitle(languages, blackListingProvider);
 
             if (subtitle == null)
             {
@@ -63,6 +65,7 @@ public class SubtitleProviderProcessor
 
             subtitleExtractor.ExtractSubtitleFile(filePath);
 
+            dataSource.SetCurrentSubtitle(video, subtitle);
             var successMessage = string.Format("Subtitle downloaded for {0} - {1}", video.Name, subtitle.Langugage);
             InformUser(successMessage);
 
@@ -93,7 +96,7 @@ public class SubtitleProviderProcessor
 
     #endregion
 
-    #region ProvideReuqestSourceEnum
+    #region ProvideRequestSourceEnum
 
     public enum ProvideRequestSourceEnum
     {

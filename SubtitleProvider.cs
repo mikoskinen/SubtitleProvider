@@ -83,8 +83,6 @@ namespace SubtitleProvider
 
         }
 
-
-
         /// <summary>
         /// Returns true if subtitle is missing for the current video.
         /// </summary>

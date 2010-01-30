@@ -178,6 +178,16 @@ namespace SubtitleProvider.ExtensionMethods
             return string.Join(",", self.Select(x => x.ToString()).ToArray());
         }
 
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> self)
+        {
+            if (self == null)
+                return true;
+
+            var list = (List<T>) self;
+
+            return list.Count == 0;
+        }
+
         #region Hash calculation helper methods
 
         private static byte[] ComputeMovieHash(Stream input)
