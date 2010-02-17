@@ -53,26 +53,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\Blacklisting\BlackListingProvider.cs" />
-    <Compile Include="Code\Blacklisting\DataSourceFactory.cs" />
-    <Compile Include="Code\Blacklisting\IDataSource.cs" />
+    <Compile Include="Code\Features\Blacklisting\BlackListingProvider.cs" />
+    <Compile Include="Code\Features\Blacklisting\DataSourceFactory.cs" />
+    <Compile Include="Code\Features\Blacklisting\IDataSource.cs" />
+    <Compile Include="Code\Features\Extracting\InvalidSubtitleFileException.cs" />
     <Compile Include="Code\LanguageProvider.cs" />
-    <Compile Include="Code\Blacklisting\XmlDataSource.cs" />
+    <Compile Include="Code\Features\Blacklisting\XmlDataSource.cs" />
     <Compile Include="Code\Utility\ZipStorer.cs" />
     <Compile Include="SubtitleProviderProcessor.cs" />
     <Compile Include="SubtitleMenuManager.cs" />
-    <Compile Include="Code\Finders\MultiFileSubtitleFinder.cs" />
-    <Compile Include="Code\SubtitleDownloader.cs" />
-    <Compile Include="Code\Extractors\SubtitleExtractor.cs" />
-    <Compile Include="Code\Sources\OpenSubtitlesSubtitleSource.cs" />
-    <Compile Include="Code\Sources\SubtitleSource.cs" />
-    <Compile Include="Code\Sources\SubtitleSourceBase.cs" />
+    <Compile Include="Code\Features\LocalFinding\MultiFileSubtitleFinder.cs" />
+    <Compile Include="Code\Features\Downloading\SubtitleDownloader.cs" />
+    <Compile Include="Code\Features\Extracting\SubtitleExtractor.cs" />
+    <Compile Include="Code\SubtitleSources\OpenSubtitlesSubtitleSource.cs" />
+    <Compile Include="Code\SubtitleSources\SubtitleSource.cs" />
+    <Compile Include="Code\SubtitleSources\SubtitleSourceBase.cs" />
     <Compile Include="Code\Utility\ExtensionMethods.cs" />
-    <Compile Include="Code\Finders\ILocalSubtitleFinder.cs" />
-    <Compile Include="Code\Finders\SingleFileSubtitleFinder.cs" />
-    <Compile Include="Code\Finders\LocalSubtitleFinderFactory.cs" />
-    <Compile Include="Code\Extractors\ISubtitleExtractor.cs" />
-    <Compile Include="Code\Extractors\MultiFileSubtitleExtractor.cs" />
+    <Compile Include="Code\Features\LocalFinding\ILocalSubtitleFinder.cs" />
+    <Compile Include="Code\Features\LocalFinding\SingleFileSubtitleFinder.cs" />
+    <Compile Include="Code\Features\LocalFinding\LocalSubtitleFinderFactory.cs" />
+    <Compile Include="Code\Features\Extracting\ISubtitleExtractor.cs" />
+    <Compile Include="Code\Features\Extracting\MultiFileSubtitleExtractor.cs" />
     <Compile Include="Code\Utility\XML-RPC\GuidEx.cs" />
     <Compile Include="Code\Utility\XML-RPC\IHttpRequest.cs" />
     <Compile Include="Code\Utility\XML-RPC\IHttpRequestHandler.cs" />
@@ -132,7 +133,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Entities\Subtitle.cs" />
     <Compile Include="Code\RemoteSubtitleFinder.cs" />
-    <Compile Include="Code\Extractors\SubtitleExtractorFactory.cs" />
+    <Compile Include="Code\Features\Extracting\SubtitleExtractorFactory.cs" />
     <Compile Include="SubtitleProvider.cs" />
   </ItemGroup>
   <ItemGroup>

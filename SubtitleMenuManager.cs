@@ -72,7 +72,7 @@ public class SubtitleMenuManager
 
     private static void HandleNoSubtitle(Video video)
     {
-        var downloadDialogResult = Application.DisplayDialog("Check online for subtitles", "No subtitle available", DialogButtons.No | DialogButtons.Yes, 0);
+        var downloadDialogResult = Application.DisplayDialog("Check online for subtitles?", "No subtitle available", DialogButtons.No | DialogButtons.Yes, 0);
 
         if (downloadDialogResult != DialogResult.Yes)
             return;

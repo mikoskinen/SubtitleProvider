@@ -63,7 +63,15 @@ public class SubtitleProviderProcessor
             var subtitleExtractorFactory = new SubtitleExtractorFactory();
             var subtitleExtractor = subtitleExtractorFactory.CreateSubtitleExtractorByVideo(video);
 
-            subtitleExtractor.ExtractSubtitleFile(filePath);
+            try
+            {
+                subtitleExtractor.ExtractSubtitleFile(filePath);
+            }
+            catch (InvalidSubtitleFileException)
+            {
+                blackListingProvider.BlackList(subtitle);
+                throw new Exception("Invalid subtitle file, blacklisting: " + subtitle.UrlToFile);
+            }
 
             dataSource.SetCurrentSubtitle(video, subtitle);
             var successMessage = string.Format("Subtitle downloaded for {0} - {1}", video.Name, subtitle.Langugage);

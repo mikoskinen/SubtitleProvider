@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using MediaBrowser.Library.Entities;
-using MediaBrowser.Library.Filesystem;
 using MediaBrowser.LibraryManagement;
 using FileInfo = System.IO.FileInfo;
 
 namespace SubtitleProvider.ExtensionMethods
 {
+
+    #region DirectoryInfo Extensions
+
     public static class DirectoryInfoExtensions
     {
         public static FileInfo[] GetFiles(this DirectoryInfo dirInfo, DirectoryInfo dir, string searchPatterns, params char[] separator)
@@ -24,6 +25,65 @@ namespace SubtitleProvider.ExtensionMethods
             return files.ToArray();
         }
     }
+
+    #endregion
+
+    #region List and Enumeration Extensions
+
+    public static class ListAndEnumerationExtensions
+    {
+        public static void AddIfNotExist<T>(this IList<T> self, T newObject)
+        {
+            if (self.Contains(newObject))
+                return;
+
+            self.Add(newObject);
+        }
+
+
+        public static string BuildString<T>(this IEnumerable<T> self, string delim)
+        {
+            return string.Join(",", self.Select(x => x.ToString()).ToArray());
+        }
+
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> self)
+        {
+            if (self == null)
+                return true;
+
+            var list = (List<T>)self;
+
+            return list.Count == 0;
+        }
+    }
+
+    #endregion
+
+    #region ByteArray Extensions
+
+    public static class ByteArrayExtensions
+    {
+
+        public static string ToHex(this byte[] byteArray)
+        {
+
+            char[] c = new char[byteArray.Length * 2];
+            byte b;
+            for (int i = 0; i < byteArray.Length; ++i)
+            {
+                b = ((byte)(byteArray[i] >> 4));
+                c[i * 2] = (char)(b > 9 ? b + 0x37 : b + 0x30);
+                b = ((byte)(byteArray[i] & 0xF));
+                c[i * 2 + 1] = (char)(b > 9 ? b + 0x37 : b + 0x30);
+            }
+
+            return new string(c);
+        }
+    }
+
+    #endregion
+
+    #region Video Extensions
 
     public static class VideoExtensions
     {
@@ -53,38 +113,33 @@ namespace SubtitleProvider.ExtensionMethods
 
             // File name with and without dots
             var fileNameWithoutDots = fileName.Replace(".", " ");
-            if (!possibleReleaseNames.Contains(fileNameWithoutDots))
-                possibleReleaseNames.Add(fileNameWithoutDots);
+            possibleReleaseNames.AddIfNotExist(fileNameWithoutDots);
 
             var fileNameWithDots = fileName.Replace(" ", ".");
-            if (!possibleReleaseNames.Contains(fileNameWithDots))
-                possibleReleaseNames.Add(fileNameWithDots);
+            possibleReleaseNames.AddIfNotExist(fileNameWithDots);
 
             // Directory name
             var directoryName = video.MediaLocation.Name;
-            if (!possibleReleaseNames.Contains(directoryName))
-                possibleReleaseNames.Add(directoryName);
+            possibleReleaseNames.AddIfNotExist(directoryName);
 
             // Directory with and without dots
             var dirNameWithoutDots = directoryName.Replace(".", " ");
-            if (!possibleReleaseNames.Contains(dirNameWithoutDots))
-                possibleReleaseNames.Add(dirNameWithoutDots);
+            possibleReleaseNames.AddIfNotExist(dirNameWithoutDots);
 
             var dirNameWithDots = directoryName.Replace(" ", ".");
-            if (!possibleReleaseNames.Contains(dirNameWithDots))
-                possibleReleaseNames.Add(dirNameWithDots);
+            possibleReleaseNames.AddIfNotExist(dirNameWithDots);
 
             // CD-number removed from the filename
             var fileNameInLowerCase = fileName.ToLower();
             if (fileNameInLowerCase.IndexOf("cd1") > 0)
             {
                 var fileNameWithoutCdNumber = fileNameInLowerCase.Substring(0, fileNameInLowerCase.IndexOf("cd1") - 1);
-                if (!possibleReleaseNames.Contains(fileNameWithoutCdNumber))
-                    possibleReleaseNames.Add(fileNameWithoutCdNumber);
+                possibleReleaseNames.AddIfNotExist(fileNameWithoutCdNumber);
             }
 
             return possibleReleaseNames;
         }
+
 
         public static string GetVideoFileName(this Video video)
         {
@@ -156,38 +211,6 @@ namespace SubtitleProvider.ExtensionMethods
 
         }
 
-        public static string ToHex(this byte[] byteArray)
-        {
-
-            char[] c = new char[byteArray.Length * 2];
-            byte b;
-            for (int i = 0; i < byteArray.Length; ++i)
-            {
-                b = ((byte)(byteArray[i] >> 4));
-                c[i * 2] = (char)(b > 9 ? b + 0x37 : b + 0x30);
-                b = ((byte)(byteArray[i] & 0xF));
-                c[i * 2 + 1] = (char)(b > 9 ? b + 0x37 : b + 0x30);
-            }
-
-            return new string(c);
-
-        }
-
-        public static string BuildString<T>(this IEnumerable<T> self, string delim)
-        {
-            return string.Join(",", self.Select(x => x.ToString()).ToArray());
-        }
-
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> self)
-        {
-            if (self == null)
-                return true;
-
-            var list = (List<T>) self;
-
-            return list.Count == 0;
-        }
-
         #region Hash calculation helper methods
 
         private static byte[] ComputeMovieHash(Stream input)
@@ -216,15 +239,9 @@ namespace SubtitleProvider.ExtensionMethods
             return result;
         }
 
-        private static string ToHexadecimal(byte[] bytes)
-        {
-            var hexBuilder = new StringBuilder();
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                hexBuilder.Append(bytes[i].ToString("x2"));
-            }
-            return hexBuilder.ToString();
-        }
         #endregion
+
     }
+
+    #endregion
 }
