@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using MediaBrowser.Library;
-using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Plugins;
 
 namespace SubtitleProvider
@@ -28,7 +26,15 @@ namespace SubtitleProvider
         /// </summary>
         public override string Description
         {
-            get { return "This plugin finds and downloads subtitles automatically. In configuration, separate the languages with comma. For example: Finnish,English,Swedish"; }
+            get
+            {
+                var description =
+                    string.Format(
+                        "SubtitleProvider is a plugin that automatically downloads the missing subtitle files for your movies and tv shows.{0}{1}In configuration, separate the languages with comma. For example: Finnish,English,Swedish",
+                        Environment.NewLine,Environment.NewLine);
+
+                return description;
+            }
         }
 
         public override bool IsConfigurable
