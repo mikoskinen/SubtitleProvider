@@ -56,6 +56,27 @@ namespace SubtitleProvider
             }
         }
 
+        /// <summary>
+        /// Gets the required media browser version
+        /// </summary>
+        public override System.Version RequiredMBVersion
+        {
+            get
+            {
+                return new System.Version(2, 2, 2, 0);
+            }
+        }
+
+        /// <summary>
+        /// Gets the media browser version for which this plugin has been tested against
+        /// </summary>
+        public override System.Version TestedMBVersion
+        {
+            get
+            {
+                return new System.Version(2, 2, 3, 0);
+            }
+        }
 
         #endregion
 
