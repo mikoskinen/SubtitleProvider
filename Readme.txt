@@ -4,7 +4,7 @@ About:
 SubtitleProvider for MediaBrowser is a plugin that automatically downloads the missing subtitle files for your movies and tv shows.
 
 Current version:
-v1.0
+v1.1.1.2
 
 How to use:
 http://community.mediabrowser.tv/permalinks/1311/how-do-i-configure-and-use-the-subtitleprovider-plugin
@@ -29,13 +29,13 @@ MediaBrowser Configuration Tool can be used to set preferred languages. Currentl
 For example to make finnish the top priority language and english the fallback, use this string: Finnish,English
 
 Known issues:
--SubtitleSource.org has disabled their search API.
+-
 
 Future releases and features:
 1. New ways to interact with the plugin
 2. Extended configuration settings
 
-Installation location: http://www.ohjelmistot.org/SubtitleProvider/plugin_info.xml
+Installation location: Install through the MediaBrowser Configuration
 
 Guide: http://community.mediabrowser.tv/permalinks/1311/how-do-i-configure-and-use-the-subtitleprovider-plugin
 
