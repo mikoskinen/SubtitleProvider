@@ -20,7 +20,7 @@ namespace SubtitleProvider
 
         #region Implementations
 
-        public override IEnumerable<Subtitle> FindSubtitlesForVideo(Video video, List<string> languages)
+        protected override IEnumerable<Subtitle> Find(Video video, List<string> languages)
         {
 
             var possibleReleaseNames = video.GetPossibleReleaseNames();
