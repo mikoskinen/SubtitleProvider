@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using MediaBrowser.Library.Entities;
@@ -26,7 +27,7 @@ namespace SubtitleProvider
                 var zip = ZipStorer.Open(filePath, FileAccess.Read);
                 var dir = zip.ReadCentralDir();
 
-                var extractedFileCount = 0;
+                var extractedFiles = new List<string>();
                 foreach (var fileEntry in dir)
                 {
                     var fileExtension = Path.GetExtension(fileEntry.FilenameInZip);
@@ -35,23 +36,26 @@ namespace SubtitleProvider
 
                     var isSubtitleFile = SubtitleProvider.SubtitleExtensions.IndexOf(fileExtension) >= 0;
 
-                    if (isSubtitleFile)
-                    {
-                        var destinationFilePath = GetDestinationFilePath(fileExtension);
+                    if (!isSubtitleFile) continue;
 
-                        zip.ExtractStoredFile(fileEntry, destinationFilePath);
+                    var destinationFilePath = GetDestinationFilePath(fileExtension);
 
-                        extractedFileCount++;
-                    }
+                    zip.ExtractStoredFile(fileEntry, destinationFilePath);
+
+                    extractedFiles.Add(destinationFilePath);
                 }
 
                 zip.Close();
                 File.Delete(filePath);
 
-                if (extractedFileCount < 1)
+                if (extractedFiles.Count < 1)
                 {
                     throw new InvalidSubtitleFileException();
                 }
+
+                // In most cases the old subtitle has been replaced. But if the
+                // file extension changes, we must delete the older files too.                
+                RemoveOldSubtitles(extractedFiles);
 
             }
             catch (Exception ex)
@@ -61,6 +65,8 @@ namespace SubtitleProvider
                 throw;
             }
         }
+
+
 
         private string ChangeFileExtensionIfTextFile(string fileExtension)
         {
@@ -77,5 +83,23 @@ namespace SubtitleProvider
             return Path.Combine(video.GetMediaFolder(),
                                 videoFileNameWithoutExtension + fileExtension);
         }
+
+        private void RemoveOldSubtitles(IEnumerable<string> extractedFiles)
+        {
+            foreach (var filePath in extractedFiles)
+            {
+                var lookForExtension = ".sub";
+                
+                var currentFileExtension = Path.GetExtension(filePath);
+                if (currentFileExtension == ".sub")
+                    lookForExtension = ".srt";
+
+                var lookForFile = Path.ChangeExtension(filePath, lookForExtension);
+
+                if (File.Exists(lookForFile))
+                    File.Delete(lookForFile);
+            }
+        }
+
     }
 }

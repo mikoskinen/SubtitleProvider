@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using MediaBrowser;
-using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Logging;
-using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Providers;
 using MediaBrowser.Library.Providers.Attributes;
 using SubtitleProvider.ExtensionMethods;
@@ -129,7 +125,7 @@ namespace SubtitleProvider
         private bool DoesSubtitleExist()
         {
 
-            var localSubtitleFinderFactory = new LocalSubtitleFinderFactory();
+            var localSubtitleFinderFactory = new LocalSubtitleFinderFactory(Plugin.PluginOptions.Instance.ExtendedLogging);
             var localSubtitleFinder = localSubtitleFinderFactory.CreateLocalSubtitleFinderByVideo(CurrentVideo, Logger.LoggerInstance);
 
             return localSubtitleFinder.DoesSubtitleExist();

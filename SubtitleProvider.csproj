@@ -57,6 +57,7 @@
     <Compile Include="Code\Features\Blacklisting\DataSourceFactory.cs" />
     <Compile Include="Code\Features\Blacklisting\IDataSource.cs" />
     <Compile Include="Code\Features\Extracting\InvalidSubtitleFileException.cs" />
+    <Compile Include="Code\Features\SubtitleSelection\SubtitleSelector.cs" />
     <Compile Include="Code\LanguageProvider.cs" />
     <Compile Include="Code\Features\Blacklisting\XmlDataSource.cs" />
     <Compile Include="Code\Utility\ZipStorer.cs" />

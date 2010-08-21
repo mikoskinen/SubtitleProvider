@@ -26,7 +26,7 @@ namespace SubtitleProvider
             }
 
             sources.Add(new OpenSubtitlesSubtitleSource());
-            //sources.Add(new SubtitleSource());
+            sources.Add(new SubtitleSource());
         }
 
         #endregion

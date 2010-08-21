@@ -57,13 +57,24 @@ namespace SubtitleProvider
         }
 
         /// <summary>
+        /// Gets the plugin's home page
+        /// </summary>
+        public override string RichDescURL
+        {
+            get 
+            {
+                return "http://mikaelkoskinen.net/subtitleprovider/index.html";
+            }
+        }
+
+        /// <summary>
         /// Gets the required media browser version
         /// </summary>
         public override System.Version RequiredMBVersion
         {
             get
             {
-                return new System.Version(2, 2, 2, 0);
+                return new System.Version(2, 2, 5, 0);
             }
         }
 
@@ -74,7 +85,7 @@ namespace SubtitleProvider
         {
             get
             {
-                return new System.Version(2, 2, 3, 0);
+                return new System.Version(2, 2, 5, 0);
             }
         }
 

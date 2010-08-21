@@ -31,7 +31,7 @@ public class SubtitleMenuManager
         var video = item.BaseItem as Video;
         if (video == null) return;
 
-        var localSubtitleFinderFactory = new LocalSubtitleFinderFactory();
+        var localSubtitleFinderFactory = new LocalSubtitleFinderFactory(Plugin.PluginOptions.Instance.ExtendedLogging);
 
         var finder = localSubtitleFinderFactory.CreateLocalSubtitleFinderByVideo(video, Logger.LoggerInstance);
 

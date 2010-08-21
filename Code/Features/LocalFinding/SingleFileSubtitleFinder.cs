@@ -9,11 +9,13 @@ namespace SubtitleProvider
     {
         private readonly Video video;
         private readonly ILogger logger;
+        private readonly bool extendedLogging;
 
-        public SingleFileSubtitleFinder(Video video, ILogger logger)
+        public SingleFileSubtitleFinder(Video video, ILogger logger, bool extendedLogging)
         {
             this.video = video;
             this.logger = logger;
+            this.extendedLogging = extendedLogging;
         }
 
         public bool DoesSubtitleExist()
@@ -25,7 +27,9 @@ namespace SubtitleProvider
 
             if (subtitleFiles.Length == 0)
             {
-                logger.ReportInfo("No subtitle files found from directory: " + dirInfo.FullName);
+                if (extendedLogging)
+                    logger.ReportInfo("No subtitle files found from directory: " + dirInfo.FullName);
+
                 return false;
             }
 
@@ -37,18 +41,23 @@ namespace SubtitleProvider
 
                 if (videoFileName == subtitleFileName)
                 {
-                    var foundInfo = string.Format(@"Subtitle file ""{0}"" matches video file ""{1}""", file.Name,
-                         video.GetVideoFileName());
-                    logger.ReportInfo(foundInfo);
+                    if (extendedLogging)
+                    {
+
+                        var foundInfo = string.Format(@"Subtitle file ""{0}"" matches video file ""{1}""", file.Name,
+                             video.GetVideoFileName());
+                        logger.ReportInfo(foundInfo);
+                    }
 
                     return true;
 
                 }
 
-                var notFoundInfo = string.Format(@"Subtitle file ""{0}"" did not match video file ""{1}""", file.Name,
-                                         video.GetVideoFileName());
-                logger.ReportInfo(notFoundInfo);
+                if (!extendedLogging) continue;
 
+                var notFoundInfo = string.Format(@"Subtitle file ""{0}"" did not match video file ""{1}""", file.Name,
+                                                 video.GetVideoFileName());
+                logger.ReportInfo(notFoundInfo);
             }
 
             return false;

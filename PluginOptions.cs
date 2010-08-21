@@ -9,5 +9,7 @@ namespace SubtitleProvider
 
         [Label("Disable automatic downloading:")] public bool DisableAutomaticDownloading;
 
+        [Label("Extended logging:")] public bool ExtendedLogging;
+
     }
 }

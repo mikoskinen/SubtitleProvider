@@ -53,7 +53,9 @@ namespace SubtitleProvider
 
         public bool IsBlacklisted(Subtitle subtitle)
         {
-            return blacklistedSubtitleCollection.Contains(subtitle);
+            var subtitles = this.blacklistedSubtitleCollection;
+            
+            return subtitles != null && subtitles.Contains(subtitle);
         }
 
         public void BlackList(Subtitle subtitle)
