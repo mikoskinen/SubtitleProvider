@@ -42,10 +42,11 @@ public class SubtitleProviderProcessor
 
             var dataSource = DataSourceFactory.CreateDataSource();
             var blackListingProvider = new BlackListingProvider(video, dataSource);
+            var subtitleSelector = new SubtitleSelector(blackListingProvider);
 
             var languageProvider = new LanguageProvider();
             var languages = languageProvider.CreateLanguageCollectionFromString(Plugin.PluginOptions.Instance.Languages);
-            var finder = new RemoteSubtitleFinder(video);
+            var finder = new RemoteSubtitleFinder(video, subtitleSelector);
             var subtitle = finder.FindSubtitle(languages, blackListingProvider);
 
             if (subtitle == null)

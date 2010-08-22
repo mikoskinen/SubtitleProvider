@@ -9,6 +9,7 @@ namespace SubtitleProvider
         #region Private Members
 
         private readonly Video video;
+        private readonly SubtitleSelector selector;
 
         private readonly List<SubtitleSourceBase> sources;
 
@@ -16,9 +17,10 @@ namespace SubtitleProvider
 
         #region Constructors
 
-        public RemoteSubtitleFinder(Video video)
+        public RemoteSubtitleFinder(Video video, SubtitleSelector selector)
         {
             this.video = video;
+            this.selector = selector;
 
             if (sources == null)
             {
@@ -68,21 +70,9 @@ namespace SubtitleProvider
 
         private Subtitle SelectBestSubtitle(List<Subtitle> subtitleCollection, List<string> preferredLanguages, BlackListingProvider blackListingProvider)
         {
-            if (subtitleCollection == null) return null;
 
-            foreach (var language in preferredLanguages)
-            {
-                foreach (var subtitle in subtitleCollection)
-                {
-                    if (blackListingProvider.IsBlacklisted(subtitle))
-                        continue;
+            return selector.SelectBestSubtitle(subtitleCollection, preferredLanguages);
 
-                    if (subtitle.Langugage == language)
-                        return subtitle;
-                }
-            }
-
-            return null;
         }
 
         #endregion
