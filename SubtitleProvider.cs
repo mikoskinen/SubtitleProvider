@@ -88,6 +88,8 @@ namespace SubtitleProvider
 
             try
             {
+                if (Plugin.PluginOptions.Instance.DisableAutomaticDownloading)
+                    return false;
 
                 Logger.ReportInfo("Checking if subtitle exists for video: " + this.CurrentVideo.GetVideoFileName());
 
