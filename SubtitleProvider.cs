@@ -45,7 +45,7 @@ namespace SubtitleProvider
 
             try
             {
-                if (Plugin.PluginOptions.Instance.DisableAutomaticDownloading)
+                if (Plugin.PluginOptions.Instance.EnableAutomaticDownloading == false)
                     return;
 
                 if (this.StartFetching(CurrentVideo) == false)
@@ -88,7 +88,7 @@ namespace SubtitleProvider
 
             try
             {
-                if (Plugin.PluginOptions.Instance.DisableAutomaticDownloading)
+                if (Plugin.PluginOptions.Instance.EnableAutomaticDownloading == false)
                     return false;
 
                 Logger.ReportInfo("Checking if subtitle exists for video: " + this.CurrentVideo.GetVideoFileName());

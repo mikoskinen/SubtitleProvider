@@ -7,7 +7,7 @@ namespace SubtitleProvider
     {
         [Label("Languages:")] public string Languages;
 
-        [Label("Disable automatic downloading:")] public bool DisableAutomaticDownloading;
+        [Label("Enable automatic downloading:")] public bool EnableAutomaticDownloading;
 
         [Label("Extended logging:")] public bool ExtendedLogging;
 
